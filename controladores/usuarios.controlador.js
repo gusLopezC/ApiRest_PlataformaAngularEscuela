@@ -18,16 +18,24 @@ var token = require("../token/token.js");
 
 //Metodo para mostrarUsuarios
 function mostrarUsuario(req, res) {
-	//console.log("Hola s");
+
+	var desde = req.query.desde || 0;
+	desde = Number(desde);
+
 	Usuarios.find((error, mostrandousuarios) => {
 
 		if (error) {
 			res.status(500).send({ message: "Error al mostrar la Grupo" })
 		} else {
-			mostrandousuarios.password = ":)";
-			res.status(200).send({ mostrandousuarios });
+			Usuarios.count((error, conteo) => {
+				mostrandousuarios.password = ":)";
+				res.status(200).send({mostrandousuarios,total : conteo});
+
+			})
 		}
-	}).sort("nombre");
+	}).sort("nombre")
+		.skip(desde)
+		.limit(5);
 }
 
 //Método para crear Usuarios

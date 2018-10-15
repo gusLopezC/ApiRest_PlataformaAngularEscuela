@@ -26,7 +26,7 @@ function crearGrupos(req, res) {
 
 	grupos.nombre = parametros.nombre;
 	grupos.descripcion = parametros.descripcion;
-	grupos.usuario = parametros.usuario._id;
+	grupos.usuario = parametros.usuario;
 	// if(req.files){
 
 	// 	var imagenRuta = req.files.imagen.path;
@@ -70,18 +70,23 @@ MOSTRAR Grupos
 
 function mostrarGrupos(req, res) {
 
+	var desde = req.query.desde || 0;
+	desde = Number(desde);
+
 	Grupos.find((error, mostrandoGrupos) => {
 
 		if (error) {
-
+			console.log(error);
 			res.status(500).send({ mensaje: "Error en la petición" })
 
 		} else {
+			Grupos.count((error, conteo) => {
+				res.status(200).send({mostrandoGrupos,total : conteo});
 
-			res.status(200).send({ mostrandoGrupos });
-		}
+			})
+			}
 
-	}).sort("_id");
+	}).populate('Usuarios', 'nombre email');
 
 }
 
