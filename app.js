@@ -17,6 +17,7 @@ CARGAR RUTAS
 var rutaUsuarios = require("./rutas/usuarios.ruta.js");
 var rutaGrupos = require("./rutas/grupos.ruta.js");
 var rutaExamenes = require("./rutas/examenes.ruta.js");
+var rutaBusquedas = require("./rutas/busqueda.ruta.js");
 
 /*=============================================
 CABECERAS HTTP
@@ -51,6 +52,7 @@ RUTAS BASE
 app.use("/api", rutaUsuarios);
 app.use("/api", rutaGrupos);
 app.use("/api", rutaExamenes);
+app.use("/api", rutaBusquedas);
 
 // la acción module.exports es de Express.js para que el módulo pueda se usado en otros archivos
 module.exports = app;
