@@ -11,6 +11,8 @@ var api = express.Router();
 //Creamos la ruta con el método GET, para pasar el método que va a tener que cargar la página cuando hagamos la petición HTTP de esa ruta
 api.get("/probandoBusqueda", ControladorBusqueda.pruebaBusqueda);
 
+api.get("/todo/:busqueda", ControladorBusqueda.BusquedaTodo);
+
 
 //Exportamos el módulo api
 module.exports = api;
