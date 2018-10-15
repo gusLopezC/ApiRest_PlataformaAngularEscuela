@@ -13,6 +13,13 @@ var Examen = require("../modelos/examenes.modelo.js");
 var fs = require("fs");
 var path = require("path");
 
+
+/**
+ * ATENCION:
+ * Hay que mandar grupo  como parametro y  su valor es el id  para crear la relaciones
+ * 
+ */
+
 /*=============================================
 CREAR Examen
 =============================================*/
@@ -24,9 +31,10 @@ function crearExamen(req, res){
 	// Recogemos los parámetros que llegan por la petición post
 	var parametros = req.body;
 
-	examen.titulo = parametros.titulo;
+	examen.nombre = parametros.nombre;
 	examen.descripcion = parametros.descripcion;
-
+	examen.usuario = parametros.usuario;
+	examen.grupo = parametros.grupo;
 	// if(req.files){
 		
 	// 	var imagenRuta = req.files.imagen.path;
@@ -35,7 +43,7 @@ function crearExamen(req, res){
 
 	// 	examen.imagen = imagenSplit[2];
 
-		if(examen.titulo != null && examen.descripcion != null){
+		if(examen.nombre != null && examen.descripcion != null){
 
 			examen.save((error, examenGuardado)=>{
 
@@ -95,9 +103,10 @@ function actualizarExamen(req,res){
 	var id = req.params.id;
 	var parametros = req.body;
 
-	examen.titulo = parametros.titulo;
+	examen.nombre = parametros.nombre;
 	examen.descripcion = parametros.descripcion;
-
+	examen.usuario = req.params._id;
+	examen.grupo = body.grupo;
 	var cambioImagen = false;
 
 	if(parametros.actualizarImagen == "0"){
@@ -126,10 +135,10 @@ function actualizarExamen(req,res){
 
 	if(cambioImagen){
 
-		if(examen.titulo != null && examen.descripcion != null && examen.imagen != null){
+		if(examen.nombre != null && examen.descripcion != null && examen.imagen != null){
 
 			var actualizar = {
-					"titulo": examen.titulo,
+					"nombre": examen.nombre,
 					"descripcion": examen.descripcion,
 					"imagen": examen.imagen
 			}

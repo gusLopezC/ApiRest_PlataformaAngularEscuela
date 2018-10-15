@@ -1,9 +1,9 @@
 "use strict"
 
 //Método de prueba
-function pruebaGrupos(req, res){
+function pruebaGrupos(req, res) {
 
-	res.status(200).send({mensaje:"Probando el controlador de Grupos"})
+	res.status(200).send({ mensaje: "Probando el controlador de Grupos" })
 
 }
 
@@ -16,7 +16,7 @@ var path = require("path");
 /*=============================================
 CREAR Grupos
 =============================================*/
-function crearGrupos(req, res){
+function crearGrupos(req, res) {
 
 	//Creamos una variable que traiga el objeto del modelo Gruposs
 	var grupos = new Grupos();
@@ -24,41 +24,41 @@ function crearGrupos(req, res){
 	// Recogemos los parámetros que llegan por la petición post
 	var parametros = req.body;
 
-	grupos.titulo = parametros.titulo;
+	grupos.nombre = parametros.nombre;
 	grupos.descripcion = parametros.descripcion;
-
+	grupos.usuario = parametros.usuario._id;
 	// if(req.files){
-		
+
 	// 	var imagenRuta = req.files.imagen.path;
 
 	// 	var imagenSplit = imagenRuta.split("\\");
 
 	// 	grupos.imagen = imagenSplit[2];
 
-		if(grupos.titulo != null && grupos.descripcion != null){
+	if (grupos.nombre != null && grupos.descripcion != null) {
 
-			grupos.save((error, grupoGuardado)=>{
+		grupos.save((error, grupoGuardado) => {
 
-				if(error){
+			if (error) {
 
-					res.status(500).send({mensaje: "Error al guardar el Grupo"})
-				
-				}else{
+				res.status(500).send({ mensaje: "Error al guardar el Grupo" })
 
-					if(!grupoGuardado){
+			} else {
 
-						res.status(404).send({mensaje: "No se ha podido guardar el Grupo"})
-					
-					}else{
+				if (!grupoGuardado) {
 
-						res.status(200).send({grupoGuardado})
+					res.status(404).send({ mensaje: "No se ha podido guardar el Grupo" })
 
-					}
+				} else {
+
+					res.status(200).send({ grupoGuardado })
+
 				}
+			}
 
-			})
+		})
 
-		}
+	}
 
 	//}
 
@@ -68,17 +68,17 @@ function crearGrupos(req, res){
 MOSTRAR Grupos
 =============================================*/
 
-function mostrarGrupos(req, res){
+function mostrarGrupos(req, res) {
 
-	Grupos.find((error, mostrandoGrupos)=>{
+	Grupos.find((error, mostrandoGrupos) => {
 
-		if(error){
+		if (error) {
 
-			res.status(500).send({mensaje: "Error en la petición"})
+			res.status(500).send({ mensaje: "Error en la petición" })
 
-		}else{
+		} else {
 
-			res.status(200).send({mostrandoGrupos});
+			res.status(200).send({ mostrandoGrupos });
 		}
 
 	}).sort("_id");
@@ -88,35 +88,35 @@ function mostrarGrupos(req, res){
 /*=============================================
 ACTUALIZAR GRUPO
 =============================================*/
-function actualizarGrupos(req,res){
+function actualizarGrupos(req, res) {
 
 	var grupos = Grupos();
 
 	var id = req.params.id;
 	var parametros = req.body;
 
-	grupos.titulo = parametros.titulo;
+	grupos.nombre = parametros.nombre;
 	grupos.descripcion = parametros.descripcion;
-
+	grupos.usuario = parametros.usuario;
 	var cambioImagen = false;
 
-	if(parametros.actualizarImagen == "0"){
+	if (parametros.actualizarImagen == "0") {
 
 		grupos.imagen = parametros.rutaImagenActual;
 		cambioImagen = true;
-		
-	}else{
 
-		if(req.files){
-		
+	} else {
+
+		if (req.files) {
+
 			var imagenRuta = req.files.imagen.path;
 			var imagenSplit = imagenRuta.split("\\");
 
 			grupos.imagen = imagenSplit[2];
 
 			var antiguaImagen = parametros.rutaImagenActual;
-			var rutaImagen = "./ficheros/grupos/"+antiguaImagen;
-		
+			var rutaImagen = "./ficheros/grupos/" + antiguaImagen;
+
 			fs.unlink(rutaImagen);
 		}
 
@@ -124,31 +124,31 @@ function actualizarGrupos(req,res){
 
 	}
 
-	if(cambioImagen){
+	if (cambioImagen) {
 
-		if(grupos.titulo != null && grupos.descripcion != null && grupos.imagen != null){
+		if (grupos.nombre != null && grupos.descripcion != null && grupos.imagen != null) {
 
 			var actualizar = {
-					"titulo": grupos.titulo,
-					"descripcion": grupos.descripcion,
-					"imagen": grupos.imagen
+				"nombre": grupos.nombre,
+				"descripcion": grupos.descripcion,
+				"imagen": grupos.imagen
 			}
 
-			Grupos.findByIdAndUpdate(id, actualizar, (error, grupoActualizado)=>{
+			Grupos.findByIdAndUpdate(id, actualizar, (error, grupoActualizado) => {
 
-				if(error){
+				if (error) {
 
-					res.status(500).send({mensaje: "Error al actualizar el Grupo"})
-				
-				}else{
+					res.status(500).send({ mensaje: "Error al actualizar el Grupo" })
 
-					if(!grupoActualizado){
+				} else {
 
-						res.status(404).send({mensaje: "No se ha podido actualizar el Grupo"})	
+					if (!grupoActualizado) {
 
-					}else{
+						res.status(404).send({ mensaje: "No se ha podido actualizar el Grupo" })
 
-						res.status(200).send({grupoActualizado});
+					} else {
+
+						res.status(200).send({ grupoActualizado });
 
 					}
 
@@ -165,22 +165,22 @@ function actualizarGrupos(req,res){
 /*=============================================
 BORRAR Grupo
 =============================================*/
-function borrarGrupos(req, res){
+function borrarGrupos(req, res) {
 
 	var id = req.params.id;
 
-	Grupos.findOne({_id: id}, (error, capturarGrupo)=>{
+	Grupos.findOne({ _id: id }, (error, capturarGrupo) => {
 
-		if(error){
+		if (error) {
 
-			res.status(500).send({mensaje: "Error al capturar el Grupo"})
-		
-		}else{
+			res.status(500).send({ mensaje: "Error al capturar el Grupo" })
 
-			if(!capturarGrupo){
+		} else {
 
-				res.status(404).send({mensaje: "No se ha podido capturar el Grupo"})		
-			
+			if (!capturarGrupo) {
+
+				res.status(404).send({ mensaje: "No se ha podido capturar el Grupo" })
+
 			}
 			// xelse{
 
@@ -192,27 +192,27 @@ function borrarGrupos(req, res){
 
 	})
 
-	setTimeout(function(){
+	setTimeout(function () {
 
-		Grupos.findByIdAndRemove(id, (error, borrarGrupo)=>{
+		Grupos.findByIdAndRemove(id, (error, borrarGrupo) => {
 
-			if(error){
+			if (error) {
 
-				res.status(500).send({mensaje: "Error al borrar el Grupo"})
-			
-			}else{
+				res.status(500).send({ mensaje: "Error al borrar el Grupo" })
 
-				if(!borrarGrupo){
+			} else {
 
-					res.status(404).send({mensaje: "No se ha podido borrar el Grupo"})		
-				
-				}else{
+				if (!borrarGrupo) {
 
-					res.status(200).send({borrarGrupo})		
+					res.status(404).send({ mensaje: "No se ha podido borrar el Grupo" })
+
+				} else {
+
+					res.status(200).send({ borrarGrupo })
 				}
 
 			}
-		
+
 		})
 
 	}, 1000)
@@ -223,20 +223,20 @@ function borrarGrupos(req, res){
 TOMAR IMAGEN Grupo
 =============================================*/
 
-function tomarImagenGrupos(req, res){
+function tomarImagenGrupos(req, res) {
 
 	var imagen = req.params.imagen;
-	var rutaImagen = "./ficheros/grupos/"+imagen;
+	var rutaImagen = "./ficheros/grupos/" + imagen;
 
-	fs.exists(rutaImagen, function(exists){
+	fs.exists(rutaImagen, function (exists) {
 
-		if(exists){
+		if (exists) {
 
 			res.sendFile(path.resolve(rutaImagen))
-		
-		}else{
 
-			res.status(404).send({mensaje: "La imagen no existe"})	
+		} else {
+
+			res.status(404).send({ mensaje: "La imagen no existe" })
 
 		}
 
@@ -251,4 +251,5 @@ module.exports = {
 	mostrarGrupos,
 	actualizarGrupos,
 	borrarGrupos,
-	tomarImagenGrupos}
+	tomarImagenGrupos
+}
