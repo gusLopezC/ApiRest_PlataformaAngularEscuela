@@ -13,6 +13,8 @@ api.get("/probandoBusqueda", ControladorBusqueda.pruebaBusqueda);
 
 api.get("/todo/:busqueda", ControladorBusqueda.BusquedaTodo);
 
+api.get("/coleccion/:tabla/:busqueda", ControladorBusqueda.BusquedaEspecifica);
+
 
 //Exportamos el módulo api
 module.exports = api;
