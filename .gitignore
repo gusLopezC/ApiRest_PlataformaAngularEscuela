@@ -1,5 +1,6 @@
 #Node modules probando
 /node_modules
+/google-demo/node_modules
 
 # Logs
 logs
