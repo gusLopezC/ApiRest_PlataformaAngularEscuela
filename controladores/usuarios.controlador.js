@@ -29,7 +29,7 @@ function mostrarUsuario(req, res) {
 		} else {
 			Usuarios.count((error, conteo) => {
 				mostrandousuarios.password = ":)";
-				res.status(200).send({mostrandousuarios,total : conteo});
+				res.status(200).send({ mostrandousuarios, total: conteo });
 
 			})
 		}
@@ -81,7 +81,86 @@ function crearUsuarios(req, res) {
 	}
 
 }
+//==================================================================================================================
+//  AUTENTIFICACION POR GOOGLE
+//==================================================================================================================
+var CLIENT_ID = require('../config/config.js').CLIENT_ID;
 
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(CLIENT_ID)
+
+
+async function verify(token) {
+	const ticket = await client.verifyIdToken({
+		idToken: token,
+		audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+		// Or, if multiple clients access the backend:
+		//[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+	});
+	const payload = ticket.getPayload();
+	//const userid = payload['sub'];
+	// If request specified a G Suite domain:
+	//const domain = payload['hd'];
+	return {
+		nombre: payload.name,
+		email: payload.email,
+		img: payload.picture,
+		google: true
+
+	}
+}
+
+async function ingresoUsuarioGoogle(req, res) {
+
+	var token = req.body.token;
+	var googleUser = await verify(token).catch(e => {
+		res.status(403).send({ mensaje: "Token no valido" })
+
+	});
+
+	Usuarios.findOne({ email: googleUser.email }, (err, usuarioDB) => {
+
+
+		if (error) {
+
+			res.status(500).send({ mensaje: "Error al ingresar el usuario" })
+
+		}
+		if (usuarioDB) {
+
+			if (usuarioDB.google === false) {
+				res.status(400).send({ mensaje: "Debe usar autentificacion normal" })
+			}else{
+				res.status(200).send({ token: token.crearToken(seleccionUsuario), seleccionUsuario })
+			}
+
+		} else {
+			// EL usuario no existe y se creara
+
+			var usuarios = new Usuarios();
+
+			usuarios.nombre = googleUser.nombre;
+			usuarios.email = googleUser.email;
+			usuarios.imagen = googleUser.img;
+			usuarios.google = true;
+			usuarios.password = ':)';
+
+			usuarios.save((error, usuarioDB) => {
+				res.status(200).send({ token: token.crearToken(seleccionUsuario), seleccionUsuario })
+
+			})
+		}
+	});
+
+	//	res.status(200).send({ mensaje: "Probando el controlador de usuarios" })
+
+}
+
+
+
+//======================================
+//  AUTENTIFICACION NORMAL
+//======================================
 //Método para ingreso de usuarios
 function ingresoUsuario(req, res) {
 
@@ -220,5 +299,6 @@ module.exports = {
 	ingresoUsuario,
 	actualizarUsuario,
 	mostrarUsuario,
-	borrarUsuario
+	borrarUsuario,
+	ingresoUsuarioGoogle
 }

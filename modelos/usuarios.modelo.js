@@ -22,7 +22,8 @@ var UsuariosSchema = Schema({
 	password:{ type:String, required:[true,'El contraseña es necesaria'] },
 	imagen: { type:String, required:false },
 	role: { type:String, required:true, default:"TEACHER_ROLE", enum: rolesValidos },
-	escuela: { type:String, required:[true,'La escuela es requerida'] },
+	escuela: { type:String,  required:false },
+	google : { type: Boolean , default:false}
 });
 
 //UsuariosSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
