@@ -16,9 +16,9 @@ var md_aut = require("../token/aut.js");
  */
 
 //Creamos la ruta con el método GET, para pasar el método que va a tener que cargar la página cuando hagamos la petición HTTP de esa ruta
-api.get("/pruebaUsuarios", md_aut.autenticacion, ControladorUsuarios.pruebaUsuarios);
+api.get("/pruebaUsuarios",  ControladorUsuarios.pruebaUsuarios);
 
-api.get("/Usuarios", ControladorUsuarios.mostrarUsuario);
+api.get("/Usuarios", md_aut.autenticacion,ControladorUsuarios.mostrarUsuario);
 
 //Creamos la ruta para crear usuarios y utilizamos el método POST
 api.post("/Usuarios", ControladorUsuarios.crearUsuarios);
