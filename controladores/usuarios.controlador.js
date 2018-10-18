@@ -47,7 +47,6 @@ function crearUsuarios(req, res) {
 	//recogemos los parámetros que llegan por la petición POST
 	var parametros = req.body;
 
-	usuarios.usuario = parametros.usuario;
 	usuarios.name = parametros.name;
 	usuarios.email = parametros.email;
 	usuarios.imagen = parametros.imagen;
@@ -59,11 +58,12 @@ function crearUsuarios(req, res) {
 		bcrypt.hash(parametros.password, null, null, function (error, hash) {
 			usuarios.password = hash;
 
-			if (usuarios.usuario != null) {
+			if (usuarios.name != null) {
 
 				usuarios.save((error, usuarioGuardado) => {
 
 					if (error) {
+						console.log("================================================")
 						console.log(error);
 						res.status(500).send({ error, mensaje: "Error al guardar el usuario" })
 

@@ -16,9 +16,9 @@ var md_aut = require("../token/aut.js");
  */
 
 //Creamos la ruta con el método GET, para pasar el método que va a tener que cargar la página cuando hagamos la petición HTTP de esa ruta
-api.get("/pruebaUsuarios",  ControladorUsuarios.pruebaUsuarios);
+api.get("/pruebaUsuarios", ControladorUsuarios.pruebaUsuarios);
 
-api.get("/Usuarios", md_aut.autenticacion,ControladorUsuarios.mostrarUsuario);
+api.get("/Usuarios", ControladorUsuarios.mostrarUsuario);
 
 //Creamos la ruta para crear usuarios y utilizamos el método POST
 api.post("/Usuarios", ControladorUsuarios.crearUsuarios);
@@ -27,7 +27,7 @@ api.post("/Usuarios", ControladorUsuarios.crearUsuarios);
 api.post("/Login", ControladorUsuarios.ingresoUsuario);
 
 //================== LOGIN POR GOOGLE
-api.post("/LoginGoogle",  ControladorUsuarios.ingresoUsuarioGoogle);
+api.post("/LoginGoogle", ControladorUsuarios.ingresoUsuarioGoogle);
 
 //Creamos la ruta para la actualización del usuario y utilizamos el método PUT
 api.put("/Usuarios/:id", md_aut.autenticacion, ControladorUsuarios.actualizarUsuario);

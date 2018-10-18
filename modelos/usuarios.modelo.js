@@ -15,13 +15,11 @@ var rolesValidos = {
 //Creamos el Esquema con los respectivos atributos
 var UsuariosSchema = Schema({
 	
-	usuario: { type:String, required:[true,'El nombre es necesario'] },
 	name: { type:String, required:[true,'El nombre es necesario'] },
-	//lastname: { type:String, required:[true,'El apellido es necesario'] },
 	email: { type:String,  required:[true,'El correo es necesario'] },
 	password:{ type:String, required:[true,'El contraseña es necesaria'] },
 	imagen: { type:String, required:false },
-	role: { type:String, required:true, default:"TEACHER_ROLE", enum: rolesValidos },
+	role: { type:String, required:false, default:"TEACHER_ROLE", enum: rolesValidos },
 	escuela: { type:String,  required:false },
 	google : { type: Boolean , default:false}
 });
