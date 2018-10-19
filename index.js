@@ -16,9 +16,9 @@ var app = require("./app");
 var port = process.env.PORT || 1234;
 
 /*=============================================
-CONEXIÓN A BASE DE DATOS
+CONEXIÓN A BASE DE DATOS       useNewUrlParser: true, autoIndex: false 
 =============================================*/
-mongoose.connect("mongodb://localhost:27017/Plataforma",{ useNewUrlParser: true, autoIndex: false  } ,(error,respuesta)=>{
+mongoose.connect("mongodb://localhost:27017/Plataforma",{useNewUrlParser: true, autoIndex: false },(error,respuesta)=>{
 
 	if(error){
 
@@ -29,11 +29,11 @@ mongoose.connect("mongodb://localhost:27017/Plataforma",{ useNewUrlParser: true,
 		console.log("La conexión a la base de datos está correcta");
 
 		//El método listen() es una referencia de Express.js para traer dos parámetros, el puerto y la acción con el puerto.
-		//app.listen(port, function(){
+		app.listen(port, function(){
 
 			console.log("Servidor del ApiRest en http://localhost:"+port)
 		
-		//})
+		})
 	}
 
 })
