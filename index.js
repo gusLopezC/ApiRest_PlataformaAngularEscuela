@@ -18,7 +18,7 @@ var port = process.env.PORT || 1234;
 /*=============================================
 CONEXIÓN A BASE DE DATOS       useNewUrlParser: true, autoIndex: false 
 =============================================*/
-mongoose.connect("mongodb://localhost:27017/Plataforma",{useNewUrlParser: true, autoIndex: false },(error,respuesta)=>{
+mongoose.connection.openUri("mongodb://localhost:27017/Plataforma",{useNewUrlParser: true, autoIndex: false },(error,respuesta)=>{
 
 	if(error){
 

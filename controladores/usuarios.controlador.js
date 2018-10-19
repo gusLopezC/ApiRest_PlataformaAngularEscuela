@@ -165,10 +165,10 @@ async function ingresoUsuarioGoogle(req, res) {
 function ingresoUsuario(req, res) {
 
 	var parametros = req.body;
-	var usuario = parametros.usuario;
+	var email = parametros.email;
 	var password = parametros.password;
 
-	Usuarios.findOne({ usuario: usuario }, (error, seleccionUsuario) => {
+	Usuarios.findOne({ email: email }, (error, seleccionUsuario) => {
 
 		if (error) {
 
@@ -177,7 +177,7 @@ function ingresoUsuario(req, res) {
 		} else {
 
 			if (!seleccionUsuario) {
-
+				
 				res.status(404).send({ mensaje: "El usuario no existe" })
 
 			} else {
@@ -193,16 +193,16 @@ function ingresoUsuario(req, res) {
 
 						// Debemos enviar un parámetro token en verdadero
 
-						if (parametros.token) {
+						// if (parametros.token) {
 
 							//Devolvemos un token de JWT
 							seleccionUsuario.password = ":)";
 							res.status(200).send({ token: token.crearToken(seleccionUsuario), seleccionUsuario })
 
-						}
+						//}
 
 					} else {
-
+						
 						res.status(404).send({ mensaje: "El usuario no ha podido ingresar" })
 					}
 
