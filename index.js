@@ -7,7 +7,7 @@ LIBRERÍA MONGODB
 // Utilizamos mongoose como librería para intermediar con la base de datos de mongoDB
 // Cargamos la librería utilizando la función require()
 var mongoose = require("mongoose");
-
+var MongoClient = require('mongodb').MongoClient;
 /*=============================================
 MODULO DE EXPRESS
 =============================================*/
@@ -18,7 +18,7 @@ var port = process.env.PORT || 1234;
 /*=============================================
 CONEXIÓN A BASE DE DATOS
 =============================================*/
-mongoose.connect("mongodb://localhost:27017/Plataforma",(error,respuesta)=>{
+mongoose.connect("mongodb://localhost:27017/Plataforma",{ useNewUrlParser: true, autoIndex: false  } ,(error,respuesta)=>{
 
 	if(error){
 
@@ -29,11 +29,11 @@ mongoose.connect("mongodb://localhost:27017/Plataforma",(error,respuesta)=>{
 		console.log("La conexión a la base de datos está correcta");
 
 		//El método listen() es una referencia de Express.js para traer dos parámetros, el puerto y la acción con el puerto.
-		app.listen(port, function(){
+		//app.listen(port, function(){
 
 			console.log("Servidor del ApiRest en http://localhost:"+port)
 		
-		})
+		//})
 	}
 
 })
