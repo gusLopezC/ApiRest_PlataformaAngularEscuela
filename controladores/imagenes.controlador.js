@@ -13,7 +13,9 @@ function pruebaImagenes(req, res) {
 function mostrarImagenes(req, res, next) {
 
     var tipo = req.params.tipo;
-    var tipo = req.params.img;
+    var img = req.params.img;
+
+    
 
     var pathImagen = path.resolve(__dirname, `../ficheros/${tipo}/${img}`);
     if (fs.existsSync(pathImagen)) {
