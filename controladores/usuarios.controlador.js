@@ -27,7 +27,7 @@ function mostrarUsuario(req, res) {
 		if (error) {
 			res.status(500).send({ message: "Error al mostrar la Grupo" })
 		} else {
-			Usuarios.count((error, conteo) => {
+			Usuarios.countDocuments((error, conteo) => {
 				mostrandousuarios.password = ":)";
 				res.status(200).send({ mostrandousuarios, total: conteo });
 
@@ -101,6 +101,7 @@ async function verify(token) {
 	//const userid = payload['sub'];
 	// If request specified a G Suite domain:
 	//const domain = payload['hd'];
+	console.log(payload);
 	return {
 		nombre: payload.name,
 		email: payload.email,
@@ -112,25 +113,26 @@ async function verify(token) {
 
 async function ingresoUsuarioGoogle(req, res) {
 
-	var token = req.body.token;
-	var googleUser = await verify(token).catch(e => {
+	var tokengoogle = req.body.tokengoogle;
+
+	var googleUser = await verify(tokengoogle).catch(e => {
 		res.status(403).send({ mensaje: "Token no valido" })
 
 	});
 
-	Usuarios.findOne({ email: googleUser.email }, (err, usuarioDB) => {
+	Usuarios.findOne({ email: googleUser.email }, (err, seleccionUsuario) => {
 
 
-		if (error) {
+		if (err) {
 
 			res.status(500).send({ mensaje: "Error al ingresar el usuario" })
 
 		}
-		if (usuarioDB) {
+		if (seleccionUsuario) {
 
-			if (usuarioDB.google === false) {
+			if (seleccionUsuario.google === false) {
 				res.status(400).send({ mensaje: "Debe usar autentificacion normal" })
-			}else{
+			} else {
 				res.status(200).send({ token: token.crearToken(seleccionUsuario), seleccionUsuario })
 			}
 
@@ -139,15 +141,20 @@ async function ingresoUsuarioGoogle(req, res) {
 
 			var usuarios = new Usuarios();
 
-			usuarios.nombre = googleUser.nombre;
+			usuarios.name = googleUser.nombre;
 			usuarios.email = googleUser.email;
 			usuarios.imagen = googleUser.img;
 			usuarios.google = true;
 			usuarios.password = ':)';
 
-			usuarios.save((error, usuarioDB) => {
-				res.status(200).send({ token: token.crearToken(seleccionUsuario), seleccionUsuario })
-
+			usuarios.save((error, seleccionUsuario) => {
+				console.log(error);
+				res.status(200).send({
+					ok: "Usuario registrado y logeado",
+					token: token.crearToken(seleccionUsuario),
+					seleccionUsuario,
+					id: seleccionUsuario._id
+				})
 			})
 		}
 	});
@@ -177,7 +184,7 @@ function ingresoUsuario(req, res) {
 		} else {
 
 			if (!seleccionUsuario) {
-				
+
 				res.status(404).send({ mensaje: "El usuario no existe" })
 
 			} else {
@@ -195,14 +202,14 @@ function ingresoUsuario(req, res) {
 
 						// if (parametros.token) {
 
-							//Devolvemos un token de JWT
-							seleccionUsuario.password = ":)";
-							res.status(200).send({ token: token.crearToken(seleccionUsuario), seleccionUsuario })
+						//Devolvemos un token de JWT
+						seleccionUsuario.password = ":)";
+						res.status(200).send({ token: token.crearToken(seleccionUsuario), seleccionUsuario })
 
 						//}
 
 					} else {
-						
+
 						res.status(404).send({ mensaje: "El usuario no ha podido ingresar" })
 					}
 

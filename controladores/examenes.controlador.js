@@ -90,7 +90,7 @@ function mostrarExamen(req, res) {
 			res.status(500).send({ error })
 
 		} else {
-			Examen.count((error, conteo) => {
+			Examen.countDocuments((error, conteo) => {
 				res.status(200).send({ mostrandoExamen ,total : conteo});
 			})
 		}

@@ -80,7 +80,7 @@ function mostrarGrupos(req, res) {
 			res.status(500).send({ mensaje: "Error en la petición" })
 
 		} else {
-			Grupos.count((error, conteo) => {
+			Grupos.countDocuments((error, conteo) => {
 				res.status(200).send({mostrandoGrupos,total : conteo});
 
 			})
