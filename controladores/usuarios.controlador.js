@@ -28,7 +28,7 @@ function mostrarUsuario(req, res) {
 			res.status(500).send({ message: "Error al mostrar la Grupo" })
 		} else {
 			Usuarios.countDocuments((error, conteo) => {
-				mostrandousuarios.password = ":)";
+				
 				res.status(200).send({ mostrandousuarios, total: conteo });
 
 			})
@@ -203,7 +203,7 @@ function ingresoUsuario(req, res) {
 						// if (parametros.token) {
 
 						//Devolvemos un token de JWT
-						seleccionUsuario.password = ":)";
+						// seleccionUsuario.password = ":)";
 						res.status(200).send({ token: token.crearToken(seleccionUsuario), seleccionUsuario })
 
 						//}

@@ -18,9 +18,9 @@ var UsuariosSchema = Schema({
 	name: { type:String, required:[true,'El nombre es necesario'] },
 	email: { type:String, index: true, unique: true, required:[true,'El correo es necesario'] },
 	password:{ type:String, required:[true,'El contraseña es necesaria'] },
-	imagen: { type:String, required:false },
+	imagen: { type:String, required:false , default:""},
 	role: { type:String, required:false, default:"TEACHER_ROLE", enum: rolesValidos },
-	escuela: { type:String,  required:false },
+	escuela: { type:String,  required:false ,default:""},
 	google : { type: Boolean , default:false}
 });
 
