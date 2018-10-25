@@ -80,15 +80,15 @@ function subirPorTipo(tipo, id, nombreArchivo, res) {
 
 			}
 
-			var pathViejo = './ficheros/usuarios/' + usuario.img;
+			var pathViejo = './ficheros/usuarios/' + usuario.imagen;
 
 			/**
 			 * Si encuentra un archivo con el path viejo las borra 
 			 */
-			if (fs.existsSync(pathViejo)) {
-				fs.unlink(pathViejo);
-			}
-			usuario.img = nombreArchivo;
+			// if (fs.existsSync(pathViejo)) {
+			// 	fs.unlink(pathViejo);
+			// }
+			usuario.imagen = nombreArchivo;
 			usuario.save((err, usuarioActualizado) => {
 				if (err) {
 					return res.status(500).send(err);

@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 
 var SlidesExamenes = Schema({
 	nombre: { type: String, required: [true, 'El	nombre	es	necesario'] },
-	img: { type: String, required: false },
+	imagen: { type: String, required: false },
 	usuario: { type: Schema.Types.ObjectId, ref: 'Usuarios', required: true },
 	grupo: {type: Schema.Types.ObjectId, ref: 'Grupos', required: [true, 'El	id	Grupos es	un	campo	obligatorio']	}
 })
