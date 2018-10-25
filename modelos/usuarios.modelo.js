@@ -21,6 +21,7 @@ var UsuariosSchema = Schema({
 	imagen: { type:String, required:false , default:""},
 	role: { type:String, required:false, default:"TEACHER_ROLE", enum: rolesValidos },
 	escuela: { type:String,  required:false ,default:""},
+	serial: { type:String,  required:false ,default:""},
 	google : { type: Boolean , default:false}
 });
 
