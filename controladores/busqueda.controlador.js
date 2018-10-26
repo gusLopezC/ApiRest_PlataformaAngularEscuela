@@ -104,8 +104,8 @@ function busquedaExamenes(busqueda, regex) {
 function busquedaUsuarios(busqueda, regex) {
 
 	return new Promise((resolve, reject) => {
-		Usuarios.find({}, 'usuario nombre email')
-			.or([{ 'nombre': regex }, { 'email': regex }])
+		Usuarios.find({})
+			.or([{ 'name': regex }, { 'email': regex }])
 			.exec((err, usuarios) => {
 
 				if (err) {
