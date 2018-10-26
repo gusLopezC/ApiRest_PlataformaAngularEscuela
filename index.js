@@ -8,6 +8,7 @@ LIBRERÍA MONGODB
 // Cargamos la librería utilizando la función require()
 var mongoose = require("mongoose");
 var MongoClient = require('mongodb').MongoClient;
+mongoose.set('useFindAndModify', false)
 /*=============================================
 MODULO DE EXPRESS
 =============================================*/

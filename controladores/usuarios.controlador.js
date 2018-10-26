@@ -35,7 +35,7 @@ function mostrarUsuario(req, res) {
 		}
 	}).sort("nombre")
 		.skip(desde)
-		.limit(5);
+		.limit(10);
 }
 
 //Método para crear Usuarios
@@ -63,7 +63,6 @@ function crearUsuarios(req, res) {
 				usuarios.save((error, usuarioGuardado) => {
 
 					if (error) {
-						console.log("================================================")
 						console.log(error);
 						res.status(500).send({ error, mensaje: "Error al guardar el usuario" })
 
