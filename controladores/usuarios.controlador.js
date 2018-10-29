@@ -230,11 +230,14 @@ function actualizarUsuario(req, res) {
 	//Tomamos los datos del formulario
 	var actualizar = req.body;
 
-	if (id != req.usuarioToken.sub) {
+	/*============================================================================
+	* TODO:Falta validad que solo el admin pueda borrar o actualizar todo
+	==============================================================================*/
+	// if (id != req.usuarioToken.sub) {
 
-		return res.status(500).send({ mensaje: "No tienes permisos para actualizar este usuario" })
+	// 	return res.status(500).send({ mensaje: "No tienes permisos para actualizar este usuario" })
 
-	}
+	// }
 
 	//Recorremos la base de datos con el método findByIdAndUpdate
 
@@ -267,11 +270,11 @@ function borrarUsuario(req, res) {
 
 	var id = req.params.id;
 
-	if (id != req.usuarioToken.sub) {
+	// if (id != req.usuarioToken.sub) {
 
-		return res.status(500).send({ mensaje: "No tienes permisos para actualizar este usuario" })
+	// 	return res.status(500).send({ mensaje: "No tienes permisos para actualizar este usuario" })
 
-	}
+	// }
 
 	//Recorremos la base de datos con el método findByIdAndRemove
 	Usuarios.findByIdAndRemove(id, (error, usuarioBorrado) => {
