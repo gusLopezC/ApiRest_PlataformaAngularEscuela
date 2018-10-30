@@ -106,17 +106,15 @@ function subirPorTipo(tipo, id, nombreArchivo, res) {
 
 			}
 
-
-
-			var pathViejo = './ficheros/grupos/' + grupo.img;
+			var pathViejo = './ficheros/grupos/' + grupo.imagen;
 
 			/**
 			 * Si encuentra un archivo con el path viejo las borra 
 			 */
-			if (fs.existsSync(pathViejo)) {
-				fs.unlink(pathViejo);
-			}
-			grupo.img = nombreArchivo;
+			// if (fs.existsSync(pathViejo)) {
+			// 	fs.unlink(pathViejo);
+			// }
+			grupo.imagen = nombreArchivo;
 
 			grupo.save((err, grupoActualizado) => {
 				if (err) {

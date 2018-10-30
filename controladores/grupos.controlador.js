@@ -18,6 +18,7 @@ CREAR Grupos
 =============================================*/
 function crearGrupos(req, res) {
 
+	
 	//Creamos una variable que traiga el objeto del modelo Gruposs
 	var grupos = new Grupos();
 
@@ -25,22 +26,10 @@ function crearGrupos(req, res) {
 	var parametros = req.body;
 
 	grupos.nombre = parametros.nombre;
-	grupos.descripcion = parametros.descripcion;
-	grupos.usuario = parametros.usuario;
-	// if(req.files){
-
-	// 	var imagenRuta = req.files.imagen.path;
-
-	// 	var imagenSplit = imagenRuta.split("\\");
-
-	// 	grupos.imagen = imagenSplit[2];
-
-	if (grupos.nombre != null && grupos.descripcion != null) {
-
-		grupos.save((error, grupoGuardado) => {
-
-			if (error) {
-
+		grupos.save((err, grupoGuardado) => {
+			
+			if (err) {
+				console.log(err);
 				res.status(500).send({ mensaje: "Error al guardar el Grupo" })
 
 			} else {
@@ -58,7 +47,7 @@ function crearGrupos(req, res) {
 
 		})
 
-	}
+	
 
 	//}
 
