@@ -22,11 +22,13 @@ var md_aut = require("../token/aut.js");
 //Creamos la ruta con el método GET, para pasar el método que va a tener que cargar la página cuando hagamos la petición HTTP de esa ruta
 api.get("/probando-controlador-Grupos", ControladorGrupos.pruebaGrupos);
 //Creamos la ruta para subir un Grupos utilizando el Token de aut, y la ruta donde se van a subir las imágenes
-api.post("/Grupos", [md_aut.autenticacion, fichero], ControladorGrupos.crearGrupos);
+api.post("/Grupos", md_aut.autenticacion, ControladorGrupos.crearGrupos);
 
 api.get("/Grupos",  ControladorGrupos.mostrarGrupos);
 
-api.put("/Grupos/:id", [md_aut.autenticacion, fichero], ControladorGrupos.actualizarGrupos);
+api.get("/BuscarGrupo/:id",  ControladorGrupos.BuscarGrupo);
+
+api.put("/Grupos/:id", md_aut.autenticacion, ControladorGrupos.actualizarGrupos);
 
 api.delete("/Grupos/:id", md_aut.autenticacion, ControladorGrupos.borrarGrupos);
 

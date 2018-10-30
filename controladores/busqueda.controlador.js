@@ -54,7 +54,7 @@ function BusquedaTodo(req, res, next) {
 
 	Promise.all([
 		busquedaGrupos(busqueda, regex),
-		busquedaGrupos(busqueda, regex),
+		busquedaExamenes(busqueda, regex),
 		busquedaUsuarios(busqueda, regex)])
 		.then(respuesta => {
 			res.status(200).send({

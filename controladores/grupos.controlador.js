@@ -81,91 +81,88 @@ function mostrarGrupos(req, res) {
 
 		} else {
 			Grupos.countDocuments((error, conteo) => {
-				res.status(200).send({mostrandoGrupos,total : conteo});
+				res.status(200).send({ mostrandoGrupos, total: conteo });
 
 			})
-			}
+		}
 
 	}).populate('Usuarios', 'nombre email');
 
 }
+/*=============================================
+MOSTRAR GRUPO ESPECIFICO
+=============================================*/
+function BuscarGrupo(req, res) {
+	var id = req.params.id;
+
+	Grupos.findById(id)
+		.populate('Usuarios')
+		.exec((err, grupos) => {
+			if (err) {
+				res.status(500).send({
+					ok: false,
+					mensaje: 'Error al buscar grupos',
+					errors: err
+				});
+			}
+			if (!grupos) {
+				res.status(400).send({
+					mensaje: 'El grupos con el id ' + id + 'no existe',
+					errors: { message: 'No existe un grupos' }
+				});
+			}
+			res.status(200).send({ grupos: grupos });
+
+		});
+
+};
 
 /*=============================================
 ACTUALIZAR GRUPO
 =============================================*/
 function actualizarGrupos(req, res) {
-
 	var grupos = Grupos();
 
 	var id = req.params.id;
 	var parametros = req.body;
 
+	Grupos.findById(id, (err, grupoActualizado) => {
+
+		if (err) {
+
+			res.status(500).send({ mensaje: "Error al actualizar el Grupo" })
+
+		} else {
+
+			if (!grupoActualizado) {
+
+				res.status(400).send({ mensaje: "No se ha podido actualizar el Grupo" })
+
+			}
+		}
+	});
 	grupos.nombre = parametros.nombre;
 	grupos.descripcion = parametros.descripcion;
 	grupos.usuario = parametros.usuario;
-	var cambioImagen = false;
 
-	if (parametros.actualizarImagen == "0") {
-
-		grupos.imagen = parametros.rutaImagenActual;
-		cambioImagen = true;
-
-	} else {
-
-		if (req.files) {
-
-			var imagenRuta = req.files.imagen.path;
-			var imagenSplit = imagenRuta.split("\\");
-
-			grupos.imagen = imagenSplit[2];
-
-			var antiguaImagen = parametros.rutaImagenActual;
-			var rutaImagen = "./ficheros/grupos/" + antiguaImagen;
-
-			fs.unlink(rutaImagen);
-		}
-
-		cambioImagen = true;
-
-	}
-
-	if (cambioImagen) {
-
-		if (grupos.nombre != null && grupos.descripcion != null && grupos.imagen != null) {
-
-			var actualizar = {
-				"nombre": grupos.nombre,
-				"descripcion": grupos.descripcion,
-				"imagen": grupos.imagen
-			}
-
-			Grupos.findByIdAndUpdate(id, actualizar, (error, grupoActualizado) => {
-
-				if (error) {
-
-					res.status(500).send({ mensaje: "Error al actualizar el Grupo" })
-
-				} else {
-
-					if (!grupoActualizado) {
-
-						res.status(404).send({ mensaje: "No se ha podido actualizar el Grupo" })
-
-					} else {
-
-						res.status(200).send({ grupoActualizado });
-
-					}
-
-				}
-
-			})
+	Grupos.save((err, grupoGuardado) => {
+		if (err) {
+			return res.status(400).json({
+				ok: false,
+				mensaje: 'Error al actualizar hospital',
+				errors: err
+			});
 
 		}
+		console.log(grupoGuardado);
+		res.status(200).send({ grupoGuardado });
 
-	}
-
+	});
 }
+
+
+
+
 
 /*=============================================
 BORRAR Grupo
@@ -256,5 +253,6 @@ module.exports = {
 	mostrarGrupos,
 	actualizarGrupos,
 	borrarGrupos,
+	BuscarGrupo,
 	tomarImagenGrupos
 }
