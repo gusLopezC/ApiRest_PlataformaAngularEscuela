@@ -122,42 +122,32 @@ ACTUALIZAR GRUPO
 =============================================*/
 function actualizarGrupos(req, res) {
 	var grupos = Grupos();
-
 	var id = req.params.id;
-	var parametros = req.body;
+	var actualizar = req.body;
 
-	Grupos.findById(id, (err, grupoActualizado) => {
+	console.log(actualizar)
 
-		if (err) {
+	Grupos.findByIdAndUpdate(id, actualizar, (error, grupoActualizado) => {
 
-			res.status(500).send({ mensaje: "Error al actualizar el Grupo" })
+		if (error) {
 
-		} else {
+			res.status(500).send({ mensaje: "Error al actualizar el usuario" })
+		}
+
+		else {
 
 			if (!grupoActualizado) {
 
-				res.status(400).send({ mensaje: "No se ha podido actualizar el Grupo" })
+				res.status(404).send({ mensaje: "No se ha podido actualizar el usuario" })
 
+			} else {
+
+				res.status(200).send({ grupoActualizado })
 			}
-		}
-	});
-	grupos.nombre = parametros.nombre;
-	grupos.descripcion = parametros.descripcion;
-	grupos.usuario = parametros.usuario;
-
-	Grupos.save((err, grupoGuardado) => {
-		if (err) {
-			return res.status(400).json({
-				ok: false,
-				mensaje: 'Error al actualizar hospital',
-				errors: err
-			});
 
 		}
-		console.log(grupoGuardado);
-		res.status(200).send({ grupoGuardado });
 
-	});
+	})
 }
 
 
