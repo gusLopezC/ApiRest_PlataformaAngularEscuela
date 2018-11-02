@@ -13,7 +13,7 @@ var SlidesExamenes = Schema({
 	resetear: { type: Boolean, required: false , default:false},
 	
 	usuario: { type: Schema.Types.ObjectId, ref: 'Usuarios', required: true },
-	grupo: {type: Schema.Types.ObjectId, ref: 'Grupos', required: [true, 'El	id	Grupos es	un	campo	obligatorio']	}
+	grupo: {type: Schema.Types.ObjectId, ref: 'Grupos', required: [true, 'El id	Grupos es un campo obligatorio']}
 })
 
 module.exports = mongoose.model("Examenes", SlidesExamenes);

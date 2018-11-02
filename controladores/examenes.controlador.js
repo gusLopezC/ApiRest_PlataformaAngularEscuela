@@ -30,25 +30,15 @@ function crearExamen(req, res) {
 
 	// Recogemos los parámetros que llegan por la petición post
 	var parametros = req.body;
-
+	console.log(parametros);
 	examen.nombre = parametros.nombre;
-	examen.descripcion = parametros.descripcion;
 	examen.usuario = parametros.usuario;
 	examen.grupo = parametros.grupo;
-	// if(req.files){
-
-	// 	var imagenRuta = req.files.imagen.path;
-
-	// 	var imagenSplit = imagenRuta.split("\\");
-
-	// 	examen.imagen = imagenSplit[2];
-
-	if (examen.nombre != null && examen.descripcion != null) {
 
 		examen.save((error, examenGuardado) => {
 
 			if (error) {
-
+				console.log(error);
 				res.status(500).send({ mensaje: "Error al guardar el Examen" })
 
 			} else {
@@ -66,7 +56,7 @@ function crearExamen(req, res) {
 
 		})
 
-	}
+	
 
 	//}
 
@@ -83,20 +73,23 @@ function mostrarExamen(req, res) {
 	desde = Number(desde);
 
 
-	Examen.find((error, mostrandoExamen) => {
+	Examen.find({})
+		.populate('usuario', 'name email')
+		.populate('grupo', 'nombre')
+		.exec(
+			(error, mostrandoExamen) => {
 
-		if (error) {
-			console.log(error);
-			res.status(500).send({ error })
+				if (error) {
+					console.log(error);
+					res.status(500).send({ error })
 
-		} else {
-			Examen.countDocuments((error, conteo) => {
-				res.status(200).send({ mostrandoExamen ,total : conteo});
+				} else {
+					Examen.countDocuments((error, conteo) => {
+						res.status(200).send({ mostrandoExamen, total: conteo });
+					})
+				}
+
 			})
-		}
-
-	}).populate('usuario', 'nombre email')
-		.populate('hospital');
 
 
 }
@@ -154,7 +147,7 @@ function actualizarExamen(req, res) {
 			Examen.findByIdAndUpdate(id, actualizar, (error, examenActualizado) => {
 
 				if (error) {
-
+					
 					res.status(500).send({ mensaje: "Error al actualizar el Examen" })
 
 				} else {
