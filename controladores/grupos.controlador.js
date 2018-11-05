@@ -18,7 +18,7 @@ CREAR Grupos
 =============================================*/
 function crearGrupos(req, res) {
 
-	
+
 	//Creamos una variable que traiga el objeto del modelo Gruposs
 	var grupos = new Grupos();
 
@@ -26,28 +26,30 @@ function crearGrupos(req, res) {
 	var parametros = req.body;
 
 	grupos.nombre = parametros.nombre;
-		grupos.save((err, grupoGuardado) => {
-			
-			if (err) {
-				console.log(err);
-				res.status(500).send({ mensaje: "Error al guardar el Grupo" })
+	grupos.usuario = parametros.usuario;
+
+	grupos.save((err, grupoGuardado) => {
+
+		if (err) {
+			console.log(err);
+			res.status(500).send({ mensaje: "Error al guardar el Grupo" })
+
+		} else {
+
+			if (!grupoGuardado) {
+
+				res.status(404).send({ mensaje: "No se ha podido guardar el Grupo" })
 
 			} else {
 
-				if (!grupoGuardado) {
+				res.status(200).send({ grupoGuardado })
 
-					res.status(404).send({ mensaje: "No se ha podido guardar el Grupo" })
-
-				} else {
-
-					res.status(200).send({ grupoGuardado })
-
-				}
 			}
+		}
 
-		})
+	})
 
-	
+
 
 	//}
 
@@ -62,20 +64,22 @@ function mostrarGrupos(req, res) {
 	var desde = req.query.desde || 0;
 	desde = Number(desde);
 
-	Grupos.find((error, mostrandoGrupos) => {
+	Grupos.find()
+		.populate('usuario','name email role')
+		.exec((error, mostrandoGrupos) => {
 
-		if (error) {
-			console.log(error);
-			res.status(500).send({ mensaje: "Error en la petición" })
+			if (error) {
+				console.log(error);
+				res.status(500).send({ mensaje: "Error en la petición" })
 
-		} else {
-			Grupos.countDocuments((error, conteo) => {
-				res.status(200).send({ mostrandoGrupos, total: conteo });
+			} else {
+				Grupos.countDocuments((error, conteo) => {
+					res.status(200).send({ mostrandoGrupos, total: conteo });
 
-			})
-		}
+				})
+			}
 
-	}).populate('Usuarios', 'nombre email');
+		})
 
 }
 /*=============================================
@@ -85,7 +89,7 @@ function BuscarGrupo(req, res) {
 	var id = req.params.id;
 
 	Grupos.findById(id)
-		.populate('Usuarios')
+		.populate('usuario', 'name email')
 		.exec((err, grupos) => {
 			if (err) {
 				res.status(500).send({

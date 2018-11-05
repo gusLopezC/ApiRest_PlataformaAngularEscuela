@@ -136,7 +136,7 @@ function subirPorTipo(tipo, id, nombreArchivo, res) {
 
 			}
 
-			var pathViejo = './ficheros/examen/' + examen.img;
+			var pathViejo = './ficheros/examen/' + examen.imagen;
 
 			/**
 			 * Si encuentra un archivo con el path viejo las borra 
@@ -144,7 +144,7 @@ function subirPorTipo(tipo, id, nombreArchivo, res) {
 			if (fs.existsSync(pathViejo)) {
 				fs.unlink(pathViejo);
 			}
-			examen.img = nombreArchivo;
+			examen.imagen = nombreArchivo;
 
 			examen.save((err, examenActualizado) => {
 				if (err) {

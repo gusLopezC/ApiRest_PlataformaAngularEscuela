@@ -34,6 +34,7 @@ function crearExamen(req, res) {
 	examen.nombre = parametros.nombre;
 	examen.usuario = parametros.usuario;
 	examen.grupo = parametros.grupo;
+	examen.licencia = parametros.licencia;
 
 		examen.save((error, examenGuardado) => {
 
