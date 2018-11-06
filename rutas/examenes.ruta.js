@@ -22,15 +22,15 @@ var md_aut = require("../token/aut.js");
 //Creamos la ruta con el método GET, para pasar el método que va a tener que cargar la página cuando hagamos la petición HTTP de esa ruta
 api.get("/probando-controlador-Examen", ControladorExamenes.pruebaExamen);
 //Creamos la ruta para subir un Examen utilizando el Token de aut, y la ruta donde se van a subir las imágenes
-api.post("/Examenes",ControladorExamenes.crearExamen);
+api.post("/Examenes", ControladorExamenes.crearExamen);
 
-api.get("/Examenes",  ControladorExamenes.mostrarExamen);
+api.get("/Examenes", ControladorExamenes.mostrarExamen);
+
+api.get("/BuscarExamen/:id", ControladorExamenes.BuscarExamen);
 
 api.put("/Examenes/:id", md_aut.autenticacion, ControladorExamenes.actualizarExamen);
 
 api.delete("/Examenes/:id", md_aut.autenticacion, ControladorExamenes.borrarExamen);
-
-api.get("/tomar-imagen-Examen/:imagen", ControladorExamenes.tomarImagenExamen);
 
 
 //EXportamos el módulo api

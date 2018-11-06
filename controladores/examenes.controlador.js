@@ -36,28 +36,28 @@ function crearExamen(req, res) {
 	examen.grupo = parametros.grupo;
 	examen.licencia = parametros.licencia;
 
-		examen.save((error, examenGuardado) => {
+	examen.save((error, examenGuardado) => {
 
-			if (error) {
-				console.log(error);
-				res.status(500).send({ mensaje: "Error al guardar el Examen" })
+		if (error) {
+			console.log(error);
+			res.status(500).send({ mensaje: "Error al guardar el Examen" })
+
+		} else {
+
+			if (!examenGuardado) {
+
+				res.status(404).send({ mensaje: "No se ha podido guardar el Examen" })
 
 			} else {
 
-				if (!examenGuardado) {
+				res.status(200).send({ examenGuardado })
 
-					res.status(404).send({ mensaje: "No se ha podido guardar el Examen" })
-
-				} else {
-
-					res.status(200).send({ examenGuardado })
-
-				}
 			}
+		}
 
-		})
+	})
 
-	
+
 
 	//}
 
@@ -95,6 +95,33 @@ function mostrarExamen(req, res) {
 
 }
 
+/*=============================================
+OBTENER EXAMEN
+=============================================*/
+function BuscarExamen(req, res) {
+	var id = req.params.id;
+
+	Examen.findById(id)
+		.populate('usuario', 'name email')
+		.populate('grupo', 'nombre')
+		.exec((err, examen) => {
+			if (err) {
+				res.status(500).send({
+					ok: false,
+					mensaje: 'Error al buscar examen',
+					errors: err
+				});
+			}
+			if (!examen) {
+				res.status(400).send({
+					mensaje: 'El examen con el id ' + id + 'no existe',
+					errors: { message: 'No existe un examen' }
+				});
+			}
+			res.status(200).send({ examen: examen });
+
+		});
+}
 /*=============================================
 ACTUALIZAR EXAMEN
 =============================================*/
@@ -148,7 +175,7 @@ function actualizarExamen(req, res) {
 			Examen.findByIdAndUpdate(id, actualizar, (error, examenActualizado) => {
 
 				if (error) {
-					
+
 					res.status(500).send({ mensaje: "Error al actualizar el Examen" })
 
 				} else {
@@ -230,30 +257,6 @@ function borrarExamen(req, res) {
 
 }
 
-/*=============================================
-TOMAR IMAGEN EXAMEN
-=============================================*/
-
-function tomarImagenExamen(req, res) {
-
-	var imagen = req.params.imagen;
-	var rutaImagen = "./ficheros/examen/" + imagen;
-
-	fs.exists(rutaImagen, function (exists) {
-
-		if (exists) {
-
-			res.sendFile(path.resolve(rutaImagen))
-
-		} else {
-
-			res.status(404).send({ mensaje: "La imagen no existe" })
-
-		}
-
-	})
-
-}
 
 //Exportamos los métodos del módulo
 module.exports = {
@@ -262,5 +265,6 @@ module.exports = {
 	mostrarExamen,
 	actualizarExamen,
 	borrarExamen,
-	tomarImagenExamen
+	BuscarExamen
 }
+
