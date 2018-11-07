@@ -132,71 +132,41 @@ function actualizarExamen(req, res) {
 	var id = req.params.id;
 	var parametros = req.body;
 
-	examen.nombre = parametros.nombre;
-	examen.descripcion = parametros.descripcion;
-	examen.usuario = req.params._id;
-	examen.grupo = body.grupo;
-	var cambioImagen = false;
+	examen.findById(id, (err, examen) => {
 
-	if (parametros.actualizarImagen == "0") {
 
-		examen.imagen = parametros.rutaImagenActual;
-		cambioImagen = true;
-
-	} else {
-
-		if (req.files) {
-
-			var imagenRuta = req.files.imagen.path;
-			var imagenSplit = imagenRuta.split("\\");
-
-			examen.imagen = imagenSplit[2];
-
-			var antiguaImagen = parametros.rutaImagenActual;
-			var rutaImagen = "./ficheros/examen/" + antiguaImagen;
-
-			fs.unlink(rutaImagen);
+		if (err) {
+			return res.status(500).send({
+				mensaje: 'Error al buscar examen',
+				errors: err
+			});
 		}
 
-		cambioImagen = true;
+		if (!examen) {
+			return res.status(400).send({
+				ok: false,
+				mensaje: 'El examen con el id ' + id + ' no existe',
+				errors: { message: 'No existe un examen con ese ID' }
+			});
+		}
 
-	}
 
-	if (cambioImagen) {
+		examen.nombre = parametros.nombre;
+		examen.usuario = parametros.usuario;
+		examen.hospital = parametros.hospital;
+		examen.licencia = parametros.licencia;
 
-		if (examen.nombre != null && examen.descripcion != null && examen.imagen != null) {
+		examen.save((err, examenGuardado) => {
 
-			var actualizar = {
-				"nombre": examen.nombre,
-				"descripcion": examen.descripcion,
-				"imagen": examen.imagen
+			if (err) {
+				return res.status(400).send({ mensaje: 'Error al actualizar medico', errors: err });
 			}
 
-			Examen.findByIdAndUpdate(id, actualizar, (error, examenActualizado) => {
+			res.status(200).send({ examenGuardado });
 
-				if (error) {
+		});
 
-					res.status(500).send({ mensaje: "Error al actualizar el Examen" })
-
-				} else {
-
-					if (!examenActualizado) {
-
-						res.status(404).send({ mensaje: "No se ha podido actualizar el Examen" })
-
-					} else {
-
-						res.status(200).send({ examenActualizado });
-
-					}
-
-				}
-
-			})
-
-		}
-
-	}
+	});
 
 }
 
