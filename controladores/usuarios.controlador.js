@@ -28,7 +28,7 @@ function mostrarUsuario(req, res) {
 			res.status(500).send({ message: "Error al mostrar la Grupo" })
 		} else {
 			Usuarios.countDocuments((error, conteo) => {
-				
+
 				res.status(200).send({ mostrandousuarios, total: conteo });
 
 			})
@@ -132,7 +132,7 @@ async function ingresoUsuarioGoogle(req, res) {
 			if (seleccionUsuario.google === false) {
 				res.status(400).send({ mensaje: "Debe usar autentificacion normal" })
 			} else {
-				res.status(200).send({ token: token.crearToken(seleccionUsuario), seleccionUsuario })
+				res.status(200).send({ token: token.crearToken(seleccionUsuario), seleccionUsuario, menu: obtenerMenu(seleccionUsuario.role) })
 			}
 
 		} else {
@@ -152,7 +152,8 @@ async function ingresoUsuarioGoogle(req, res) {
 					ok: "Usuario registrado y logeado",
 					token: token.crearToken(seleccionUsuario),
 					seleccionUsuario,
-					id: seleccionUsuario._id
+					id: seleccionUsuario._id,
+					menu: obtenerMenu(seleccionUsuario.role)
 				})
 			})
 		}
@@ -195,17 +196,13 @@ function ingresoUsuario(req, res) {
 
 					if (ok) {
 
-						// res.status(200).send({seleccionUsuario});
+						res.status(200).send({
+							token: token.crearToken(seleccionUsuario),
+							seleccionUsuario,
+							menu: obtenerMenu(seleccionUsuario.role)
+						});
 
-						// Debemos enviar un parámetro token en verdadero
 
-						// if (parametros.token) {
-
-						//Devolvemos un token de JWT
-						// seleccionUsuario.password = ":)";
-						res.status(200).send({ token: token.crearToken(seleccionUsuario), seleccionUsuario })
-
-						//}
 
 					} else {
 
@@ -297,7 +294,48 @@ function borrarUsuario(req, res) {
 		}
 
 	})
+}
+function obtenerMenu(ROLE) {
 
+	var menu = [
+
+		{
+			titulo: 'Mantenimientos',
+			icono: 'mdi mdi-settings',
+			submenu: [
+				// { titulo: 'Usuarios', url: '/usuarios' },
+				{ titulo: 'Grupos', url: '/grupos' },
+				{ titulo: 'Examenes', url: '/examenes' }
+			]
+		},
+		{
+			titulo: 'Herramientas',
+			icono: 'mdi mdi-folder-lock-open',
+			submenu: [
+				// { titulo: 'Usuarios', url: '/usuarios' },
+
+			]
+		},
+		{
+			titulo: 'Juegos',
+			icono: 'mdi mdi-gamepad-variant',
+			submenu: [
+				// { titulo: 'Usuarios', url: '/usuarios' },
+
+			]
+		}
+
+	];
+
+	console.log('ROLE', ROLE);
+
+	if (ROLE === 'ADMIN_ROLE') {
+		menu[0].submenu.unshift({ titulo: 'Usuarios', url: '/usuarios' });
+	}
+
+
+
+	return menu;
 
 }
 
