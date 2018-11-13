@@ -296,41 +296,45 @@ function borrarUsuario(req, res) {
 	})
 }
 function obtenerMenu(ROLE) {
-
-	var menu = [
-
+	var menu
+	if (ROLE === 'ADMIN_ROLE') {
+	menu = [
 		{
 			titulo: 'Mantenimientos',
 			icono: 'mdi mdi-settings',
 			submenu: [
-				// { titulo: 'Usuarios', url: '/usuarios' },
 				{ titulo: 'Grupos', url: '/grupos' },
 				{ titulo: 'Examenes', url: '/examenes' }
 			]
 		},
 		{
-			titulo: 'Herramientas',
+			titulo: 'Informes',
 			icono: 'mdi mdi-folder-lock-open',
-			submenu: [
-				// { titulo: 'Usuarios', url: '/usuarios' },
-
-			]
+			submenu: []
 		},
 		{
 			titulo: 'Juegos',
 			icono: 'mdi mdi-gamepad-variant',
-			submenu: [
-				// { titulo: 'Usuarios', url: '/usuarios' },
-
-			]
+			submenu: []
 		}
-
 	];
-
-	console.log('ROLE', ROLE);
+}
 
 	if (ROLE === 'ADMIN_ROLE') {
 		menu[0].submenu.unshift({ titulo: 'Usuarios', url: '/usuarios' });
+		menu[1].submenu.unshift({ titulo: 'Mis informes', url: '/informes' });
+		menu[2].submenu.unshift({ titulo: 'snake', url: '/snake' });
+	}
+	if (ROLE === 'TEACHER_ROLE') {
+		menu[1].submenu.unshift({ titulo: 'Mis informes', url: '/informesstudent' });
+	}
+	if (ROLE === 'STUDENT_ROLE') {
+		menu[1].submenu.unshift({ titulo: 'Mis informes', url: '/informesstendent' });
+		menu[2].submenu.unshift({ titulo: 'Snake', url: '/snake' });
+		menu[2].submenu.unshift({ titulo: 'Gato', url: '/gato' });
+		menu[2].submenu.unshift({ titulo: 'Gato-Versus', url: '/gatoversus' });
+		menu[2].submenu.unshift({ titulo: 'Recuerda colores', url: '/recuerdacolores' });
+		menu[2].submenu.slice({ titulo: 'Ahorcado', url: '/ahorcado' });
 	}
 
 
