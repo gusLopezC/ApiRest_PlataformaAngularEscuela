@@ -100,7 +100,7 @@ async function verify(token) {
 	//const userid = payload['sub'];
 	// If request specified a G Suite domain:
 	//const domain = payload['hd'];
-	console.log(payload);
+	//console.log(payload);
 	return {
 		nombre: payload.name,
 		email: payload.email,
@@ -297,47 +297,56 @@ function borrarUsuario(req, res) {
 }
 function obtenerMenu(ROLE) {
 	var menu
-	if (ROLE === 'ADMIN_ROLE') {
+	
 	menu = [
-		{
+		
+		{//0
 			titulo: 'Mantenimientos',
-			icono: 'mdi mdi-settings',
+			icono: 'fas fa-sliders-h',
 			submenu: [
 				{ titulo: 'Grupos', url: '/grupos' },
 				{ titulo: 'Examenes', url: '/examenes' }
 			]
 		},
-		{
+		{//1
+			titulo: 'Actividades',
+			icono: 'fas fa-book-reader',
+			submenu: [
+				//Mis actividades
+				//Compartir con un profesor
+			]
+		},
+		{//2
 			titulo: 'Informes',
-			icono: 'mdi mdi-folder-lock-open',
+			icono: 'far fa-chart-bar',
 			submenu: []
 		},
-		{
+		{//3
 			titulo: 'Juegos',
-			icono: 'mdi mdi-gamepad-variant',
-			submenu: []
+			icono: 'fab fa-nintendo-switch',
+			submenu: [
+				{ titulo: 'Snake', url: '/snake' },
+				{ titulo: 'Gato', url: '/gato' },
+				{ titulo: 'Gato-Versus', url: '/gatoversus' },
+				{ titulo: 'Recuerda colores', url: '/recuerdacolores' },
+				{ titulo: 'Ahorcado', url: '/ahorcado' }
+			]
 		}
-	];
-}
-
+	]
 	if (ROLE === 'ADMIN_ROLE') {
 		menu[0].submenu.unshift({ titulo: 'Usuarios', url: '/usuarios' });
-		menu[1].submenu.unshift({ titulo: 'Mis informes', url: '/informes' });
-		menu[2].submenu.unshift({ titulo: 'snake', url: '/snake' });
+		menu[2].submenu.unshift({ titulo: 'Mis informes', url: '/informes' });	
 	}
 	if (ROLE === 'TEACHER_ROLE') {
-		menu[1].submenu.unshift({ titulo: 'Mis informes', url: '/informesstudent' });
+		menu[2].submenu.unshift({ titulo: 'Mis informes', url: '/informes' });
+		
 	}
-	if (ROLE === 'STUDENT_ROLE') {
-		menu[1].submenu.unshift({ titulo: 'Mis informes', url: '/informesstendent' });
-		menu[2].submenu.unshift({ titulo: 'Snake', url: '/snake' });
-		menu[2].submenu.unshift({ titulo: 'Gato', url: '/gato' });
-		menu[2].submenu.unshift({ titulo: 'Gato-Versus', url: '/gatoversus' });
-		menu[2].submenu.unshift({ titulo: 'Recuerda colores', url: '/recuerdacolores' });
-		menu[2].submenu.slice({ titulo: 'Ahorcado', url: '/ahorcado' });
+	if (ROLE === 'STUDENT_ROLE') {		
+		menu[2].submenu.unshift({ titulo: 'Mis informes', url: '/informesstudent' });
+		menu = menu.slice(1);
 	}
 
-
+	
 
 	return menu;
 
