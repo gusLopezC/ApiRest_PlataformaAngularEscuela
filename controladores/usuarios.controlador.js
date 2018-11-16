@@ -335,9 +335,11 @@ function obtenerMenu(ROLE) {
 	]
 	if (ROLE === 'ADMIN_ROLE') {
 		menu[0].submenu.unshift({ titulo: 'Usuarios', url: '/usuarios' });
-		menu[2].submenu.unshift({ titulo: 'Mis informes', url: '/informes' });	
+		menu[1].submenu.unshift({ titulo: 'Mis Actividades', url: '/misactividades' });	
+		menu[1].submenu.unshift({ titulo: 'Crea Actividades', url: '/creaactividades' });	
 	}
 	if (ROLE === 'TEACHER_ROLE') {
+		menu[2].submenu.unshift({ titulo: 'Mis informes', url: '/informes' });
 		menu[2].submenu.unshift({ titulo: 'Mis informes', url: '/informes' });
 		
 	}
