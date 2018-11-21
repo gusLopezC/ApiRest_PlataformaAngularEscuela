@@ -305,7 +305,8 @@ function obtenerMenu(ROLE) {
 			icono: 'fas fa-sliders-h',
 			submenu: [
 				{ titulo: 'Grupos', url: '/grupos' },
-				{ titulo: 'Examenes', url: '/examenes' }
+				{ titulo: 'Examenes', url: '/examenes' },
+				{ titulo: 'Agenda', url: '/agenda' }
 			]
 		},
 		{//1
@@ -339,6 +340,7 @@ function obtenerMenu(ROLE) {
 		menu[1].submenu.unshift({ titulo: 'Crea Actividades', url: '/creaactividades' });	
 	}
 	if (ROLE === 'TEACHER_ROLE') {
+		menu[0].submenu.unshift({ titulo: 'Usuarios', url: '/usuarios' });
 		menu[2].submenu.unshift({ titulo: 'Mis informes', url: '/informes' });
 		menu[2].submenu.unshift({ titulo: 'Mis informes', url: '/informes' });
 		
