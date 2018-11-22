@@ -338,12 +338,13 @@ function obtenerMenu(ROLE) {
 		menu[0].submenu.unshift({ titulo: 'Usuarios', url: '/usuarios' });
 		menu[1].submenu.unshift({ titulo: 'Mis Actividades', url: '/misactividades' });	
 		menu[1].submenu.unshift({ titulo: 'Crea Actividades', url: '/formularioactividad' });	
+		menu[2].submenu.unshift({ titulo: 'Mis informes', url: '/informes' });
+
 	}
 	if (ROLE === 'TEACHER_ROLE') {
 		menu[0].submenu.unshift({ titulo: 'Usuarios', url: '/usuarios' });
 		menu[1].submenu.unshift({ titulo: 'Mis Actividades', url: '/misactividades' });	
 		menu[1].submenu.unshift({ titulo: 'Crea Actividades', url: '/creaactividades' });	
-		menu[2].submenu.unshift({ titulo: 'Mis informes', url: '/informes' });
 		menu[2].submenu.unshift({ titulo: 'Mis informes', url: '/informes' });
 		
 	}
